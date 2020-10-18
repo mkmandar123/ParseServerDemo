@@ -5,28 +5,27 @@ const ParseDashboard = require('parse-dashboard');
 const app = express();
 
 const api = new ParseServer({
-    databaseURI: 'mongodb+srv://me:dcbdwK45ZsusXqRO@cluster0.1inoe.mongodb.net/testParse?retryWrites=true&w=majority', // Connection string for your MongoDB database
+    databaseURI: process.env.DB_URL, // Connection string for your MongoDB database
     cloud: './cloud.js', // Absolute path to your Cloud Code
-    appId: 'myAppId',
-    masterKey: 'myMasterKey', // Keep this key secret!
-    fileKey: 'optionalFileKey',
-    serverURL: 'https://mandar-parse-server.herokuapp.com/parse', // Don't forget to change to https if needed
-    javaScriptKey: 'myJSKey'
+    appId: process.env.app_id,
+    masterKey: process.env.master_key, // Keep this key secret!
+    serverURL: process.env.server_url, // Don't forget to change to https if needed
+    javaScriptKey: process.env.js_key
 });
 
 
-Parse.initialize('myAppId', 'myJSKey');
-Parse.masterKey = 'myMasterKey';
-Parse.serverURL = 'https://mandar-parse-server.herokuapp.com/parse';
+Parse.initialize(process.env.app_id, process.env.js_key);
+Parse.masterKey = process.env.master_key;
+Parse.serverURL = process.env.server_url;
 
 app.use('/parse', api);
 
 const dashboard = new ParseDashboard({
     "apps": [
         {
-            "serverURL": "https://mandar-parse-server.herokuapp.com/parse",
-            "appId": "myAppId",
-            "masterKey": "myMasterKey",
+            "serverURL": process.env.server_url,
+            "appId": process.env.app_id,
+            "masterKey": process.env.master_key,
             "appName": "Testing Parse Server"
         }
     ]
